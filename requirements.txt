@@ -1,0 +1,23 @@
+# Smart Document Chat - Dependencies
+# Production-ready RAG chatbot for PDF document Q&A
+
+# Core Framework
+streamlit>=1.28.0
+requests>=2.31.0
+
+# LangChain & AI
+langchain==0.3.11
+langchain-core>=0.3.25
+langchain-community==0.3.11
+langchain-chroma
+langchain-ollama
+
+# Vector Database
+chromadb>=1.0.0
+
+# Document Processing
+pypdf>=3.17.0
+
+# Utilities
+pydantic>=2.7.4
+termcolor

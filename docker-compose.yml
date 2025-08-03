@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # Ollama service for LLM backend
+  ollama:
+    image: ollama/ollama:latest
+    container_name: rag-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_KEEP_ALIVE=24h
+    networks:
+      - rag-network
+    restart: unless-stopped
+    # Health check for Ollama service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    # Pull required models on startup
+    command: >
+      sh -c "ollama serve &
+             sleep 10 &&
+             ollama pull gemma3:4b &&
+             ollama pull nomic-embed-text &&
+             wait"
+
+  # RAG Chatbot application
+  rag-chatbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag-chatbot-app
+    ports:
+      - "8501:8501"
+    volumes:
+      # Persistent storage for PDFs and vector database
+      - ./pdfFiles:/app/pdfFiles
+      - ./vectorDB:/app/vectorDB
+      # Optional: Mount logs directory
+      - ./logs:/app/logs
+    environment:
+      - LLM_BASE_URL=http://ollama:11434
+      - LLM_MODEL=gemma3:4b
+      - EMBEDDING_MODEL=nomic-embed-text
+      - LLM_TEMPERATURE=0.7
+      - PYTHONPATH=/app
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_ENABLE_CORS=false
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - rag-network
+    restart: unless-stopped
+    # Health check for the application
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # Wait for Ollama to be ready before starting
+    command: >
+      sh -c "until curl -f http://ollama:11434/api/tags; do
+               echo 'Waiting for Ollama to be ready...';
+               sleep 5;
+             done;
+             streamlit run app.py --server.address 0.0.0.0 --server.port 8501 --server.headless true"
+
+volumes:
+  ollama_data:
+    driver: local
+
+networks:
+  rag-network:
+    driver: bridge
