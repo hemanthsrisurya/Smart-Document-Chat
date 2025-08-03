@@ -120,23 +120,6 @@ PDF Upload → Text Extraction → Chunking → Embeddings → Vector Store
 User Question → Similarity Search → Context Retrieval → LLM → Response
 ```
 
-## ⚙️ Configuration
-
-Edit `user_config.ini` to customize settings:
-
-```ini
-[AI_SETTINGS]
-llm_model = gemma3:4b
-llm_temperature = 0.6
-
-[DOCUMENT_PROCESSING]
-chunk_size = 1500
-chunk_overlap = 200
-
-[UI_SETTINGS]
-page_title = 🤖 Smart Document Assistant
-```
-
 ## 🛠️ Troubleshooting
 
 ### Common Issues
@@ -157,28 +140,6 @@ page_title = 🤖 Smart Document Assistant
 **❌ "Module not found"**
 - Run: `pip install -r requirements.txt`
 - Ensure you're in the project directory
-
-### System Requirements
-
-**Minimum:**
-- Windows 10/11
-- 8GB RAM (16GB recommended)
-- 10GB free disk space
-- Python 3.8+
-- Internet connection (for initial setup)
-
-**Recommended:**
-- 16GB+ RAM
-- SSD storage
-- 4+ CPU cores
-
-## 🤝 Contributing
-
-Contributions are welcome! Areas for improvement:
-- Additional document formats (Word, PowerPoint)
-- Multi-language support
-- UI/UX enhancements
-- Performance optimizations
 
 ### Development Setup
 ```powershell
@@ -205,8 +166,3 @@ This project is open-source and available under the MIT License.
 - **Streamlit** for the beautiful web interface
 - **Gemma3:4B** model by Google for intelligent responses
 
----
-
-*Built with ❤️ for Windows users. Transform your documents into conversations!* 🪟
-
-**Ready to start?** Run `install.ps1` and begin chatting with your documents! 🎉
