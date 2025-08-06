@@ -120,27 +120,6 @@ PDF Upload → Text Extraction → Chunking → Embeddings → Vector Store
 User Question → Similarity Search → Context Retrieval → LLM → Response
 ```
 
-## 🛠️ Troubleshooting
-
-### Common Issues
-
-**❌ "Python not found"**
-- Install Python 3.8+ from https://python.org
-- Check "Add to PATH" during installation
-
-**❌ "Ollama not responding"**
-- Install Ollama from https://ollama.ai
-- Run: `ollama serve`
-- Run: `ollama pull gemma3:4b`
-
-**❌ "Port 8501 in use"**
-- Close other Streamlit apps
-- Use different port: `streamlit run app.py --server.port 8502`
-
-**❌ "Module not found"**
-- Run: `pip install -r requirements.txt`
-- Ensure you're in the project directory
-
 ### Development Setup
 ```powershell
 # Clone and setup
@@ -158,7 +137,7 @@ streamlit run app.py --logger.level debug
 
 This project is open-source and available under the MIT License.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - **Ollama** for local LLM hosting
 - **ChromaDB** for vector database capabilities  
